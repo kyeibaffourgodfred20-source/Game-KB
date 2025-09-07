@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Video Hub</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+    }
+
+    header {
+      background: #1e293b;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #38bdf8;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #94a3b8;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .video-card {
+      background: #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+    .video-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .video-card video {
+      width: 100%;
+      display: block;
+    }
+
+    .video-info {
+      padding: 15px;
+    }
+    .video-info h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #f1f5f9;
+    }
+    .video-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    /* Upload Section */
+    .upload-section {
+      margin-top: 40px;
+      padding: 20px;
+      background: #1e293b;
+      border-radius: 10px;
+    }
+
+    .upload-section h2 {
+      margin-top: 0;
+      color: #38bdf8;
+    }
+
+    .upload-section input, .upload-section textarea, .upload-section button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .upload-section input, .upload-section textarea {
+      background: #0f172a;
+      color: #fff;
+    }
+
+    .upload-section button {
+      background: #38bdf8;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .upload-section button:hover {
+      background: #0ea5e9;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Game Video Hub</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#upload">Upload</a>
+      <a href="#">Categories</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Latest Game Videos</h2>
+    <div class="video-grid" id="videoGrid">
+      <!-- Example Videos -->
+      <div class="video-card">
+        <video controls>
+          <source src="sample1.mp4" type="video/mp4">
+        </video>
+        <div class="video-info">
+          <h3>Epic Minecraft Adventure</h3>
+          <p>By Gamer123</p>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <video controls>
+          <source src="sample2.mp4" type="video/mp4">
+        </video>
+        <div class="video-info">
+          <h3>Fortnite Victory Royale</h3>
+          <p>By ProPlayer</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="upload-section" id="upload">
+      <h2>Upload Your Game Video</h2>
+      <input type="text" id="title" placeholder="Video Title">
+      <input type="text" id="author" placeholder="Your Name">
+      <textarea id="desc" placeholder="Short description..."></textarea>
+      <input type="file" id="fileInput" accept="video/*">
+      <button onclick="uploadVideo()">Post Video</button>
+    </div>
+  </div>
+
+  <script>
+    function uploadVideo() {
+      const title = document.getElementById('title').value;
+      const author = document.getElementById('author').value;
+      const desc = document.getElementById('desc').value;
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+
+      if (!title || !author || !file) {
+        alert("Please fill in all fields and choose a video file.");
+        return;
+      }
+
+      const videoURL = URL.createObjectURL(file);
+      const grid = document.getElementById('videoGrid');
+
+      // Create new video card
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.innerHTML = `
+        <video controls>
+          <source src="${videoURL}" type="video/mp4">
+        </video>
+        <div class="video-info">
+          <h3>${title}</h3>
+          <p>By ${author}</p>
+          <p style="font-size:12px; color:#64748b;">${desc}</p>
+        </div>
+      `;
+
+      grid.prepend(card); // add to top
+      document.getElementById('title').value = "";
+      document.getElementById('author').value = "";
+      document.getElementById('desc').value = "";
+      fileInput.value = "";
+    }
+  </script>
+</body>
+</html>
